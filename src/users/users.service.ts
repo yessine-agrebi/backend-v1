@@ -1,21 +1,42 @@
 import { Injectable } from '@nestjs/common';
-export type User = any;
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { Repository } from 'typeorm';
+
 @Injectable()
 export class UsersService {
-    private readonly users = [
-        {
-          userId: 1,
-          email: 'yessine@gmail.com',
-          password: '123456',
-        },
-        {
-          userId: 2,
-          email: 'aymen@gmail.com',
-          password: 'guess',
-        },
-      ];
+  constructor (
+    @InjectRepository(User)
+    private usersRepository: Repository<User>
+  ) {}
     
-      async findOne(email: string): Promise<User | undefined> {
-        return this.users.find(user => user.email === email);
-      }
+  async findAll(): Promise<User[]> {
+    return this.usersRepository.find();
+  }
+
+  async findOne(userId: number): Promise<User> {
+    return this.usersRepository.findOneBy({userId});
+  }
+
+  async create(user: User): Promise<User> {
+    const newUser = await this.findByEmail(user.email);
+    console.log(newUser)
+    if(newUser) {
+      throw new Error('Email already in use');
+    }
+    return this.usersRepository.save(user);
+  }
+
+  async update(userId: number, user: User): Promise<User> {
+    await this.usersRepository.update(userId, user);
+    return this.usersRepository.findOneBy({userId});
+  }
+
+  async remove(userId: number): Promise<void> {
+    await this.usersRepository.delete(userId);
+  }
+    
+  async findByEmail(email: string) : Promise<User> {
+    return this.usersRepository.findOne({where: {email}});
+  }
 }
