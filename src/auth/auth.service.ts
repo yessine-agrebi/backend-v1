@@ -26,9 +26,11 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
   generateRandomPassword(length: number) {
     return randomBytes(length).toString('hex');
   }
+  
   async register(user: RegisterUserDto): Promise<{ access_token: string }> {
     const salt = this.generateRandomPassword(8);
     const hash = scryptSync(user.password, salt, 32) as Buffer;

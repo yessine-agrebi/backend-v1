@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Role } from '../roles';
+import { Speciality } from 'src/specialities/entities/speciality.entity';
 
 @Entity('users')
 export class User {
@@ -17,4 +18,7 @@ export class User {
   phone?: string;
   @Column({ default: Role.USER })
   role: Role;
+  @ManyToOne(() => Speciality, (speciality) => speciality.specialityId)
+  @JoinColumn({ name: 'speciality_id' })
+  speciality: Speciality;
 }
