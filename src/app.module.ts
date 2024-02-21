@@ -21,7 +21,6 @@ dotenvConfig({ path: '.env' });
     }),
     AuthModule,
     UsersModule,
-    
   ],
   controllers: [],
   providers: [],
