@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SpecialitiesModule } from './specialities/specialities.module';
+import { AvailabilityModule } from './availability/availability.module';
 
 dotenvConfig({ path: '.env' });
 @Module({
@@ -23,6 +24,7 @@ dotenvConfig({ path: '.env' });
     AuthModule,
     UsersModule,
     SpecialitiesModule,
+    AvailabilityModule,
   ],
   controllers: [],
   providers: [],
