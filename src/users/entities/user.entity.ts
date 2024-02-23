@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Role } from '../roles';
 import { Speciality } from 'src/specialities/entities/speciality.entity';
 import { Availability } from 'src/availability/entities/availability.entity';
@@ -22,7 +29,6 @@ export class User {
   @ManyToOne(() => Speciality, (speciality) => speciality.specialityId)
   @JoinColumn({ name: 'speciality_id' })
   speciality: Speciality;
-  @ManyToOne(() => Availability, (availability) => availability.availabilityId)
-  @JoinColumn({ name: 'availability_id' })
+  @OneToMany(() => Availability, (availability) => availability.availabilityId)
   availabilities: Availability[];
 }
