@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAvailabilityDto } from './dto/create-availability.dto';
 import { UpdateAvailabilityDto } from './dto/update-availability.dto';
+import { Repository } from 'typeorm';
+import { Availability } from './entities/availability.entity';
 
 @Injectable()
 export class AvailabilityService {
-  create(createAvailabilityDto: CreateAvailabilityDto) {
-    return 'This action adds a new availability';
+  constructor (private availabilityRepository: Repository<Availability>) {}
+  create(createAvailabilityDto: CreateAvailabilityDto): Promise<Availability> {
+    return this.availabilityRepository.save(createAvailabilityDto);
   }
 
-  findAll() {
-    return `This action returns all availability`;
+  findAll(): Promise<Availability[]> {
+    return this.availabilityRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} availability`;
+  findOne(id: number): Promise<Availability> {
+    return this.availabilityRepository.findOneBy({availabilityId: id});
   }
 
-  update(id: number, updateAvailabilityDto: UpdateAvailabilityDto) {
-    return `This action updates a #${id} availability`;
-  }
+  // update(id: number, updateAvailabilityDto: UpdateAvailabilityDto) {
+  //   return `This action updates a #${id} availability`;
+  // }
 
   remove(id: number) {
-    return `This action removes a #${id} availability`;
+    return this.availabilityRepository.delete(id);
   }
 }

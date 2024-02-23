@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSpecialityDto } from './dto/create-speciality.dto';
 import { UpdateSpecialityDto } from './dto/update-speciality.dto';
+import { Repository } from 'typeorm';
+import { Speciality } from './entities/speciality.entity';
 
 @Injectable()
 export class SpecialitiesService {
-  create(createSpecialityDto: CreateSpecialityDto) {
-    return 'This action adds a new speciality';
+  constructor (private specialityRepository: Repository<Speciality>) {}
+  create(createSpecialityDto: CreateSpecialityDto): Promise<Speciality> {
+    return this.specialityRepository.save(createSpecialityDto);
   }
 
-  findAll() {
-    return `This action returns all specialities`;
+  findAll(): Promise<Speciality[]> {
+    return this.specialityRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} speciality`;
+  findOne(id: number): Promise<Speciality> {
+    return this.specialityRepository.findOneBy({specialityId: id});
   }
 
-  update(id: number, updateSpecialityDto: UpdateSpecialityDto) {
-    return `This action updates a #${id} speciality`;
+  update(id: number, updateSpecialityDto: CreateSpecialityDto) {
+    return this.specialityRepository.update(id, updateSpecialityDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} speciality`;
+    return this.specialityRepository.delete(id);
   }
 }
