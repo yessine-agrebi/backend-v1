@@ -1,1 +1,3 @@
-export class CreateSpecialityDto {}
+export class CreateSpecialityDto {
+    name: string;
+}

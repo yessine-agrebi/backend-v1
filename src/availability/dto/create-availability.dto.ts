@@ -1,1 +1,5 @@
-export class CreateAvailabilityDto {}
+export class CreateAvailabilityDto {
+    day: string;
+    startTime: string;
+    endTime: string;
+}
