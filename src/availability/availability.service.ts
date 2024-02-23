@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAvailabilityDto } from './dto/create-availability.dto';
-import { UpdateAvailabilityDto } from './dto/update-availability.dto';
 import { Repository } from 'typeorm';
 import { Availability } from './entities/availability.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AvailabilityService {
-  constructor (private availabilityRepository: Repository<Availability>) {}
+  constructor(
+    @InjectRepository(Availability)
+    private availabilityRepository: Repository<Availability>,
+  ) {}
   create(createAvailabilityDto: CreateAvailabilityDto): Promise<Availability> {
     return this.availabilityRepository.save(createAvailabilityDto);
   }
@@ -16,7 +19,7 @@ export class AvailabilityService {
   }
 
   findOne(id: number): Promise<Availability> {
-    return this.availabilityRepository.findOneBy({availabilityId: id});
+    return this.availabilityRepository.findOneBy({ availabilityId: id });
   }
 
   // update(id: number, updateAvailabilityDto: UpdateAvailabilityDto) {

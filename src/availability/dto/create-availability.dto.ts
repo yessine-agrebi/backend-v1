@@ -1,5 +1,5 @@
 export class CreateAvailabilityDto {
-    day: string;
-    startTime: string;
-    endTime: string;
+  day: string;
+  startTime: string;
+  endTime: string;
 }

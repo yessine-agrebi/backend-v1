@@ -1,3 +1,3 @@
 export class CreateSpecialityDto {
-    name: string;
+  name: string;
 }

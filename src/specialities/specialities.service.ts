@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSpecialityDto } from './dto/create-speciality.dto';
-import { UpdateSpecialityDto } from './dto/update-speciality.dto';
 import { Repository } from 'typeorm';
 import { Speciality } from './entities/speciality.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class SpecialitiesService {
-  constructor (private specialityRepository: Repository<Speciality>) {}
+  constructor(
+    @InjectRepository(Speciality)
+    private specialityRepository: Repository<Speciality>,
+  ) {}
   create(createSpecialityDto: CreateSpecialityDto): Promise<Speciality> {
     return this.specialityRepository.save(createSpecialityDto);
   }
@@ -15,8 +18,8 @@ export class SpecialitiesService {
     return this.specialityRepository.find();
   }
 
-  findOne(id: number): Promise<Speciality> {
-    return this.specialityRepository.findOneBy({specialityId: id});
+  findOne(specialityId: number): Promise<Speciality> {
+    return this.specialityRepository.findOneBy({ specialityId });
   }
 
   update(id: number, updateSpecialityDto: CreateSpecialityDto) {
