@@ -1,3 +1,4 @@
+import { Skill } from 'src/skills/entities/skill.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -9,4 +10,6 @@ export class Speciality {
   name: string;
   @OneToMany(() => User, (user) => user.userId)
   user: User;
+  @OneToMany(() => Skill, (skill) => skill.skillId)
+  skills: Skill[];
 }

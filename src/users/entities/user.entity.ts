@@ -31,4 +31,6 @@ export class User {
   speciality: Speciality;
   @OneToMany(() => Availability, (availability) => availability.availabilityId)
   availabilities: Availability[];
+  @Column({ nullable: true })
+  description: string;
 }
