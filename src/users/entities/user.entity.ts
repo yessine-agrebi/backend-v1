@@ -33,4 +33,14 @@ export class User {
   availabilities: Availability[];
   @Column({ nullable: true })
   description: string;
+  @Column({ nullable: true })
+  experience: number;
+  @Column({ nullable: true, default: "Tunisia" })
+  country: string;
+  @Column({ nullable: true })
+  profilePicture: string;
+  @Column({ nullable: true })
+  price: number;
+  @Column({ nullable: true })
+  rating: number;
 }
