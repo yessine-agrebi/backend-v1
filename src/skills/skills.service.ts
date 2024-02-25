@@ -1,26 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSkillDto } from './dto/create-skill.dto';
-import { UpdateSkillDto } from './dto/update-skill.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Skill } from './entities/skill.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SkillsService {
+  constructor(
+    @InjectRepository(Skill)
+    private skillsRepository: Repository<Skill>,
+  ) {}
   create(createSkillDto: CreateSkillDto) {
-    return 'This action adds a new skill';
+    return this.skillsRepository.save(createSkillDto);
   }
 
   findAll() {
-    return `This action returns all skills`;
+    return this.skillsRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} skill`;
+    return this.skillsRepository.findOneBy({ skillId: id });
   }
 
-  update(id: number, updateSkillDto: UpdateSkillDto) {
-    return `This action updates a #${id} skill`;
+  update(id: number, updateSkillDto: CreateSkillDto) {
+    return this.skillsRepository.update(id, updateSkillDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} skill`;
+    return this.skillsRepository.delete(id);
   }
 }

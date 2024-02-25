@@ -35,7 +35,7 @@ export class User {
   description: string;
   @Column({ nullable: true })
   experience: number;
-  @Column({ nullable: true, default: "Tunisia" })
+  @Column({ nullable: true, default: 'Tunisia' })
   country: string;
   @Column({ nullable: true })
   profilePicture: string;
