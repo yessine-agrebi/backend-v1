@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dtos/register.dto';
+import { Role } from './roles';
 
 @Injectable()
 export class UsersService {
@@ -11,11 +12,14 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+  async findAllUsers(): Promise<User[]> {
+    return this.usersRepository.find({where: {
+      role: Role.USER
+    }});
   }
 
-  async findOne(userId: number): Promise<User> {
+
+  async findOneUser(userId: number): Promise<User> {
     return this.usersRepository.findOneBy({ userId });
   }
 
@@ -29,16 +33,22 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async update(userId: number, user: User): Promise<User> {
+  async updateUser(userId: number, user: User): Promise<User> {
     await this.usersRepository.update(userId, user);
     return this.usersRepository.findOneBy({ userId });
   }
 
-  async remove(userId: number): Promise<void> {
+  async removeUser(userId: number): Promise<void> {
     await this.usersRepository.delete(userId);
   }
 
   async findByEmail(email: string): Promise<User> {
     return this.usersRepository.findOne({ where: { email } });
+  }
+
+  async findAllTutors(): Promise<User[]> {
+    return this.usersRepository.find({where: {
+      role: Role.TUTOR
+    }});
   }
 }
