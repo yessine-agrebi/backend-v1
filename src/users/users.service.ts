@@ -47,8 +47,12 @@ export class UsersService {
   }
 
   async updateUser(userId: number, user: UserDto): Promise<User> {
-    await this.usersRepository.update(userId, user);
-    return this.usersRepository.findOneBy({ userId });
+    try {
+      await this.usersRepository.update(userId, user);
+      return this.usersRepository.findOneBy({ userId });
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`)
+    }
   }
 
   async removeUser(userId: number): Promise<string> {

@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTutorDto } from './dto/create-tutor.dto';
 import { UpdateTutorDto } from './dto/update-tutor.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Repository } from 'typeorm';
+import { Role } from 'src/users/roles';
+import { UserDto } from 'src/users/dtos/user.dto';
+import { TutorDto } from './dto/tutor.dto';
 
 @Injectable()
 export class TutorsService {
-  create(createTutorDto: CreateTutorDto) {
-    return 'This action adds a new tutor';
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
+  
+  findAllTutors() {
+    return this.usersRepository.find({
+      where: {
+        role: Role.TUTOR,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all tutors`;
+  findOneTutor(id: number) {
+    return this.usersRepository.findOneBy({ userId: id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tutor`;
+  async updateTutor(userId: number, tutor: TutorDto): Promise<User> {
+    try {
+      await this.usersRepository.update(userId, tutor);
+      return this.usersRepository.findOneBy({ userId });
+    } catch (error) {
+      throw new Error(`Failed to update user: ${error.message}`)
+    }
   }
 
-  update(id: number, updateTutorDto: UpdateTutorDto) {
-    return `This action updates a #${id} tutor`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} tutor`;
+  async removeTutor(userId: number): Promise<string> {
+    const user = await this.findOneTutor(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    try {
+      await this.usersRepository.delete(userId);
+      return `Tutor with ID ${userId} has been successfully deleted`;
+    } catch (error) {
+      throw new Error(
+        `Failed to delete tutor with ID ${userId}: ${error.message}`,
+      );
+    }
   }
 }
