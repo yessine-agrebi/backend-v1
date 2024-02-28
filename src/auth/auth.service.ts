@@ -31,16 +31,16 @@ export class AuthService {
     return randomBytes(length).toString('hex');
   }
 
-  async register(user: RegisterUserDto): Promise<{ access_token: string }> {
+  async register(user: RegisterUserDto): Promise<{ message: string }> {
     const salt = this.generateRandomPassword(8);
     const hash = scryptSync(user.password, salt, 32) as Buffer;
-    const result = `${salt}.${hash.toString('hex')}`;
+    const hashedPassword = `${salt}.${hash.toString('hex')}`;
     const newUser = await this.usersService.create({
       ...user,
-      password: result,
+      password: hashedPassword,
     });
     return {
-      access_token: await this.jwtService.signAsync(newUser),
+      message: `User ${newUser.email} has been created`,
     };
   }
 }
