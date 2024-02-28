@@ -32,6 +32,6 @@ export class AuthService {
   
 
   async register(user: RegisterUserDto): Promise<User> {
-    return this.usersService.create(user);
+    return this.usersService.createUser(user);
   }
 }

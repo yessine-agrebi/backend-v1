@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -16,17 +20,18 @@ export class UsersService {
   ) {}
 
   async findAllUsers(): Promise<User[]> {
-    return this.usersRepository.find({where: {
-      role: Role.USER
-    }});
+    return this.usersRepository.find({
+      where: {
+        role: Role.USER,
+      },
+    });
   }
-
 
   async findOneUser(userId: number): Promise<User> {
     return this.usersRepository.findOneBy({ userId });
   }
 
-  async create(user: RegisterUserDto): Promise<User> {
+  async createUser(user: RegisterUserDto): Promise<User> {
     const newUser = await this.findByEmail(user.email);
     const salt = generateRandomPassword(8);
     const hash = scryptSync(user.password, salt, 32) as Buffer;
@@ -46,12 +51,22 @@ export class UsersService {
     return this.usersRepository.findOneBy({ userId });
   }
 
-  async removeUser(userId: number): Promise<void> {
-    await this.usersRepository.delete(userId);
+  async removeUser(userId: number): Promise<string> {
+    const user = await this.findOneUser(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    try {
+      await this.usersRepository.delete(userId);
+      return `User with ID ${userId} has been successfully deleted`;
+    } catch (error) {
+      throw new Error(
+        `Failed to delete user with ID ${userId}: ${error.message}`,
+      );
+    }
   }
 
   async findByEmail(email: string): Promise<User> {
     return this.usersRepository.findOne({ where: { email } });
   }
-
 }
