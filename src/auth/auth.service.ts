@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { randomBytes, scryptSync } from 'crypto';
 import { RegisterUserDto } from 'src/users/dtos/register.dto';
+import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import generateRandomPassword from 'src/utils';
 
 @Injectable()
 export class AuthService {
@@ -27,20 +29,9 @@ export class AuthService {
     };
   }
 
-  generateRandomPassword(length: number) {
-    return randomBytes(length).toString('hex');
-  }
+  
 
-  async register(user: RegisterUserDto): Promise<{ message: string }> {
-    const salt = this.generateRandomPassword(8);
-    const hash = scryptSync(user.password, salt, 32) as Buffer;
-    const hashedPassword = `${salt}.${hash.toString('hex')}`;
-    const newUser = await this.usersService.create({
-      ...user,
-      password: hashedPassword,
-    });
-    return {
-      message: `User ${newUser.email} has been created`,
-    };
+  async register(user: RegisterUserDto): Promise<User> {
+    return this.usersService.create(user);
   }
 }

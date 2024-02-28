@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dtos/register.dto';
 import { Role } from './roles';
 import { UserDto } from './dtos/user.dto';
+import generateRandomPassword from 'src/utils';
+import { scryptSync } from 'crypto';
 
 @Injectable()
 export class UsersService {
@@ -26,12 +28,17 @@ export class UsersService {
 
   async create(user: RegisterUserDto): Promise<User> {
     const newUser = await this.findByEmail(user.email);
-    console.log(newUser);
+    const salt = generateRandomPassword(8);
+    const hash = scryptSync(user.password, salt, 32) as Buffer;
+    const hashedPassword = `${salt}.${hash.toString('hex')}`;
     if (newUser) {
-      throw new Error('Email already in use');
+      throw new ConflictException('Email already in use');
     }
 
-    return this.usersRepository.save(user);
+    return this.usersRepository.save({
+      ...user,
+      password: hashedPassword,
+    });
   }
 
   async updateUser(userId: number, user: UserDto): Promise<User> {
