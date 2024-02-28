@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { randomBytes, scryptSync } from 'crypto';
+import { scryptSync } from 'crypto';
 import { RegisterUserDto } from 'src/users/dtos/register.dto';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
-import generateRandomPassword from 'src/utils';
 
 @Injectable()
 export class AuthService {
@@ -28,8 +27,6 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
-
-  
 
   async register(user: RegisterUserDto): Promise<User> {
     return this.usersService.createUser(user);

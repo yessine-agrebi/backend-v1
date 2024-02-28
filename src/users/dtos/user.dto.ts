@@ -1,11 +1,9 @@
-import { Type } from "class-transformer";
-import { IsEmail, IsNumber, IsOptional, IsString } from "class-validator";
-import { Role } from "../roles";
-import { AvailabilityDto } from "src/availability/dto/availability.dto";
-import { SpecialityDto } from "src/specialities/dto/speciality.dto";
+import { Type } from 'class-transformer';
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Role } from '../roles';
 
 export class UserDto {
-    @IsNumber()
+  @IsNumber()
   userId: number;
 
   @IsString()
