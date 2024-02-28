@@ -15,11 +15,14 @@ export class SpecialitiesService {
   }
 
   findAll(): Promise<Speciality[]> {
-    return this.specialityRepository.find();
+    return this.specialityRepository.find({relations: ["skills"]});
   }
 
-  findOne(specialityId: number): Promise<Speciality> {
-    return this.specialityRepository.findOneBy({ specialityId });
+  async findOne(specialityId: number): Promise<Speciality> {
+    return await this.specialityRepository.findOne({
+      where: {specialityId: specialityId},
+      relations: ["skills"]
+    });
   }
 
   update(id: number, updateSpecialityDto: CreateSpecialityDto) {

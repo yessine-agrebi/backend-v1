@@ -12,7 +12,7 @@ export class Skill {
   skillId: number;
   @Column()
   name: string;
-  @ManyToOne(() => Speciality, (speciality) => speciality.specialityId)
+  @ManyToOne(() => Speciality, (speciality) => speciality.skills)
   @JoinColumn({ name: 'speciality_id' })
   speciality: Speciality;
 }

@@ -10,6 +10,6 @@ export class Speciality {
   name: string;
   @OneToMany(() => User, (user) => user.userId)
   user: User;
-  @OneToMany(() => Skill, (skill) => skill.skillId)
+  @OneToMany(() => Skill, (skill) => skill.speciality)
   skills: Skill[];
 }
