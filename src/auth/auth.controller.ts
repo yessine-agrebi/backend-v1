@@ -19,15 +19,17 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto.email, signInDto.password);
+  async signIn(@Body() signInDto: SignInDto) {
+    return await this.authService.signIn(signInDto.email, signInDto.password);
   }
 
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  register(@Body() user: RegisterUserDto) {
-    return this.authService.register(user);
+  async register(@Body() user: RegisterUserDto) {
+    const response = await this.authService.register(user);
+    console.log(response);
+    return response;
   }
 
   @Get('profile')
