@@ -17,6 +17,7 @@ export class TutorsService {
       where: {
         role: Role.TUTOR,
       },
+      relations: ['speciality'],
     });
   }
 
