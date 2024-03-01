@@ -11,7 +11,7 @@ export class TutorsService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
-  
+
   findAllTutors() {
     return this.usersRepository.find({
       where: {
@@ -30,7 +30,7 @@ export class TutorsService {
       await this.usersRepository.update(userId, tutor);
       return this.usersRepository.findOneBy({ userId });
     } catch (error) {
-      throw new Error(`Failed to update user: ${error.message}`)
+      throw new Error(`Failed to update user: ${error.message}`);
     }
   }
 

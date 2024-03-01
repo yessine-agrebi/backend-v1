@@ -17,22 +17,22 @@ export class SkillsService {
   async create(createSkillDto: CreateSkillDto) {
     const skill: Skill = await this.skillsRepository.save(createSkillDto);
     console.log(skill);
-  if (skill) {
-    const speciality = await this.specialityRepository.findOne({ 
-      where: { specialityId: skill.speciality.specialityId }, 
-      relations: ["skills"] 
-    });
-    if (speciality) {
-      console.log(speciality)
-      speciality.skills.push(skill);
-      await this.specialityRepository.save(speciality);
+    if (skill) {
+      const speciality = await this.specialityRepository.findOne({
+        where: { specialityId: skill.speciality.specialityId },
+        relations: ['skills'],
+      });
+      if (speciality) {
+        console.log(speciality);
+        speciality.skills.push(skill);
+        await this.specialityRepository.save(speciality);
+      }
     }
-  }
-  return skill;
+    return skill;
   }
 
   async findAll(): Promise<Skill[]> {
-    return await this.skillsRepository.find({relations: ["speciality"]});
+    return await this.skillsRepository.find({ relations: ['speciality'] });
   }
 
   findOne(id: number) {

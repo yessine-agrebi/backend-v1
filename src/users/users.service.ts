@@ -51,7 +51,7 @@ export class UsersService {
       await this.usersRepository.update(userId, user);
       return this.usersRepository.findOneBy({ userId });
     } catch (error) {
-      throw new Error(`Failed to update user: ${error.message}`)
+      throw new Error(`Failed to update user: ${error.message}`);
     }
   }
 
