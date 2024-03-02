@@ -3,15 +3,32 @@ import { CreateAvailabilityDto } from './dto/create-availability.dto';
 import { Repository } from 'typeorm';
 import { Availability } from './entities/availability.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Tutor } from 'src/tutors/entities/tutor.entity';
+import { AvailabilityDto } from './dto/availability.dto';
 
 @Injectable()
 export class AvailabilityService {
   constructor(
     @InjectRepository(Availability)
     private availabilityRepository: Repository<Availability>,
+    @InjectRepository(Tutor)
+    private tutorRepository: Repository<Tutor>,
   ) {}
-  create(createAvailabilityDto: CreateAvailabilityDto): Promise<Availability> {
-    return this.availabilityRepository.save(createAvailabilityDto);
+  
+  async create(createAvailabilityDto: AvailabilityDto): Promise<Availability> {
+    const availability = await this.availabilityRepository.create(createAvailabilityDto);
+    console.log(availability)
+    if(availability) {
+      const tutor = await this.tutorRepository.findOne({
+        where: {userId: availability.tutor.userId},
+        relations: ['availabilities']
+      })
+      if(tutor) {
+        tutor.availabilities.push(availability);
+        await this.tutorRepository.save(tutor);
+      }
+    }
+    return availability;
   }
 
   findAll(): Promise<Availability[]> {

@@ -7,6 +7,7 @@ import { SpecialitiesModule } from './specialities/specialities.module';
 import { AvailabilityModule } from './availability/availability.module';
 import { SkillsModule } from './skills/skills.module';
 import { TutorsModule } from './tutors/tutors.module';
+import { MeetingsModule } from './meetings/meetings.module';
 
 dotenvConfig({ path: '.env' });
 @Module({
@@ -29,6 +30,7 @@ dotenvConfig({ path: '.env' });
     AvailabilityModule,
     SkillsModule,
     TutorsModule,
+    MeetingsModule,
   ],
   controllers: [],
   providers: [],
