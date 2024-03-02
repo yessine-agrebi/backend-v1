@@ -55,7 +55,6 @@ export class AuthService {
   }
 
   async register(user: User | Tutor): Promise<User | Tutor> {
-    let userOrTutor: User | Tutor;
     const userExists = await this.usersService.findByEmail(user.email);
     if (userExists) {
       throw new Error('User already exists');

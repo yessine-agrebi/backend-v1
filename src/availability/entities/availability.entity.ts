@@ -1,5 +1,4 @@
 import { Tutor } from 'src/tutors/entities/tutor.entity';
-import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   Entity,
@@ -18,9 +17,9 @@ export class Availability {
   startTime: string;
   @Column({ nullable: false, name: 'end_time' })
   endTime: string;
-  @Column({ nullable: false, name: 'start_date' }) 
+  @Column({ nullable: false, name: 'start_date' })
   startDate: Date;
-  @Column({ nullable: false, name: 'end_date' }) 
+  @Column({ nullable: false, name: 'end_date' })
   endDate: Date;
   @ManyToOne(() => Tutor, (tutor) => tutor.availabilities)
   @JoinColumn({ name: 'tutor_id' })

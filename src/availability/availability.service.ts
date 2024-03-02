@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAvailabilityDto } from './dto/create-availability.dto';
 import { Repository } from 'typeorm';
 import { Availability } from './entities/availability.entity';
 import { InjectRepository } from '@nestjs/typeorm';

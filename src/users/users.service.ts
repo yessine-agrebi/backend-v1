@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterUserDto } from './dtos/register.dto';
-import { Role } from './roles';
 import { UserDto } from './dtos/user.dto';
 import generateRandomPassword from 'src/utils';
 import { scryptSync } from 'crypto';
@@ -21,7 +20,7 @@ export class UsersService {
 
   async findAllUsers(): Promise<User[]> {
     return this.usersRepository.find({
-      relations: ['meetings']
+      relations: ['meetings'],
     });
   }
 

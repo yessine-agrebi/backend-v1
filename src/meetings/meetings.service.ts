@@ -9,29 +9,28 @@ import { Tutor } from 'src/tutors/entities/tutor.entity';
 
 @Injectable()
 export class MeetingsService {
-  constructor (
+  constructor(
     @InjectRepository(Meeting)
     private meetingRepository: Repository<Meeting>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Tutor)
     private tutorRepository: Repository<Tutor>,
-  
   ) {}
   async create(createMeetingDto: CreateMeetingDto) {
     const meeting = this.meetingRepository.create(createMeetingDto);
-    if(meeting) {
+    if (meeting) {
       const user = await this.userRepository.findOne({
-        where: {userId: createMeetingDto.user.userId},
-        relations: ['meetings']
+        where: { userId: createMeetingDto.user.userId },
+        relations: ['meetings'],
       });
       if (user) {
         user.meetings.push(meeting);
         await this.userRepository.save(user);
-      };
+      }
       const tutor = await this.tutorRepository.findOne({
-        where: {userId: createMeetingDto.tutor.userId},
-        relations: ['meetings']
+        where: { userId: createMeetingDto.tutor.userId },
+        relations: ['meetings'],
       });
       if (tutor) {
         tutor.meetings.push(meeting);
@@ -50,7 +49,7 @@ export class MeetingsService {
   }
 
   update(id: number, updateMeetingDto: UpdateMeetingDto) {
-    return `This action updates a #${id} meeting`;
+    return this.meetingRepository.update(id, updateMeetingDto);
   }
 
   remove(id: number) {

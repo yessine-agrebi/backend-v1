@@ -13,8 +13,8 @@ export class Tutor extends User {
     cascade: true,
   })
   availabilities: Availability[];
-  @OneToMany(() => Meeting, meeting => meeting.tutor, { cascade: true })
-  meetings: Meeting[]
+  @OneToMany(() => Meeting, (meeting) => meeting.tutor, { cascade: true })
+  meetings: Meeting[];
   @Column({ nullable: false })
   description: string;
   @Column({ nullable: false })

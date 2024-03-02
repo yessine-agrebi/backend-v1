@@ -1,6 +1,5 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { AvailabilityService } from './availability.service';
-import { CreateAvailabilityDto } from './dto/create-availability.dto';
 import { AvailabilityDto } from './dto/availability.dto';
 
 @Controller('availability')
