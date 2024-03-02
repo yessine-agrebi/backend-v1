@@ -1,4 +1,5 @@
 import { Availability } from 'src/availability/entities/availability.entity';
+import { Meeting } from 'src/meetings/entities/meeting.entity';
 import { Speciality } from 'src/specialities/entities/speciality.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
@@ -12,6 +13,8 @@ export class Tutor extends User {
     cascade: true,
   })
   availabilities: Availability[];
+  @OneToMany(() => Meeting, meeting => meeting.tutor, { cascade: true })
+  meetings: Meeting[]
   @Column({ nullable: false })
   description: string;
   @Column({ nullable: false })

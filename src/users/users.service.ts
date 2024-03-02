@@ -21,9 +21,7 @@ export class UsersService {
 
   async findAllUsers(): Promise<User[]> {
     return this.usersRepository.find({
-      where: {
-        role: Role.USER,
-      },
+      relations: ['meetings']
     });
   }
 

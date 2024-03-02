@@ -7,8 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from '../roles';
-import { Speciality } from 'src/specialities/entities/speciality.entity';
-import { Availability } from 'src/availability/entities/availability.entity';
+import { Meeting } from 'src/meetings/entities/meeting.entity';
 
 @Entity('users')
 export class User {
@@ -30,4 +29,6 @@ export class User {
   profilePicture: string;
   @Column({ nullable: false, default: 'Tunisia' })
   country: string;
+  @OneToMany(() => Meeting, (meeting) => meeting.user, { cascade: true })
+  meetings: Meeting[];
 }

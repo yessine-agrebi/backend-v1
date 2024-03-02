@@ -38,7 +38,7 @@ export class TutorsService {
 
   findAllTutors() {
     return this.tutorsRepository.find({
-      relations: ['speciality', 'availabilities'],
+      relations: ['speciality', 'availabilities', 'meetings'],
     });
   }
 

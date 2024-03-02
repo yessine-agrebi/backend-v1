@@ -16,7 +16,7 @@ export class AvailabilityService {
   ) {}
 
   async create(createAvailabilityDto: AvailabilityDto): Promise<Availability> {
-    const availability = await this.availabilityRepository.create(
+    const availability = this.availabilityRepository.create(
       createAvailabilityDto,
     );
     console.log(availability);
@@ -30,7 +30,7 @@ export class AvailabilityService {
         await this.tutorRepository.save(tutor);
       }
     }
-    return availability;
+    return await this.availabilityRepository.save(availability);
   }
 
   findAll(): Promise<Availability[]> {
