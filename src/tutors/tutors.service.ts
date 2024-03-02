@@ -1,50 +1,72 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from 'src/users/roles';
 import { TutorDto } from './dto/tutor.dto';
+import { Tutor } from './entities/tutor.entity';
+import { CreateTutorDto } from './dto/create-tutor.dto';
+import generateRandomPassword from 'src/utils';
+import { scryptSync } from 'crypto';
 
 @Injectable()
 export class TutorsService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
+    @InjectRepository(Tutor)
+    private tutorsRepository: Repository<Tutor>,
   ) {}
+  async findByEmail(email: string): Promise<User> {
+    return this.tutorsRepository.findOne({ where: { email } });
+  }
+  async createTutor(tutor: CreateTutorDto): Promise<Tutor> {
+    const newUser = await this.findByEmail(tutor.email);
+    const salt = generateRandomPassword(8);
+    const hash = scryptSync(tutor.password, salt, 32) as Buffer;
+    const hashedPassword = `${salt}.${hash.toString('hex')}`;
+    if (newUser) {
+      throw new ConflictException('Email already in use');
+    }
+
+    return this.tutorsRepository.save({
+      ...tutor,
+      password: hashedPassword,
+    });
+  }
 
   findAllTutors() {
-    return this.usersRepository.find({
-      where: {
-        role: Role.TUTOR,
-      },
-      relations: ['speciality'],
+    return this.tutorsRepository.find({
+      relations: ['speciality', 'availabilities'],
     });
   }
 
   findOneTutor(id: number) {
-    return this.usersRepository.findOneBy({ userId: id });
+    return this.tutorsRepository.findOneBy({ userId: id });
   }
 
   async updateTutor(userId: number, tutor: TutorDto): Promise<User> {
     try {
-      await this.usersRepository.update(userId, tutor);
-      return this.usersRepository.findOneBy({ userId });
+      await this.tutorsRepository.update(userId, tutor);
+      return this.tutorsRepository.findOneBy({ userId });
     } catch (error) {
       throw new Error(`Failed to update user: ${error.message}`);
     }
   }
 
-  async removeTutor(userId: number): Promise<string> {
-    const user = await this.findOneTutor(userId);
+  async removeTutor(tutorId: number): Promise<string> {
+    const user = await this.findOneTutor(tutorId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
     try {
-      await this.usersRepository.delete(userId);
-      return `Tutor with ID ${userId} has been successfully deleted`;
+      await this.tutorsRepository.delete(tutorId);
+      return `Tutor with ID ${tutorId} has been successfully deleted`;
     } catch (error) {
       throw new Error(
-        `Failed to delete tutor with ID ${userId}: ${error.message}`,
+        `Failed to delete tutor with ID ${tutorId}: ${error.message}`,
       );
     }
   }

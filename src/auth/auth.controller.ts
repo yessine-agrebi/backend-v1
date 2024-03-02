@@ -10,7 +10,8 @@ import {
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { SignInDto } from 'src/users/dtos/signIn.dto';
-import { RegisterUserDto } from 'src/users/dtos/register.dto';
+import { User } from 'src/users/entities/user.entity';
+import { Tutor } from 'src/tutors/entities/tutor.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +27,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  async register(@Body() user: RegisterUserDto) {
+  async register(@Body() user: User | Tutor) {
     const response = await this.authService.register(user);
     console.log(response);
     return response;

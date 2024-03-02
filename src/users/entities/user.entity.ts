@@ -26,21 +26,8 @@ export class User {
   phone?: string;
   @Column({ default: Role.USER })
   role: Role;
-  @ManyToOne(() => Speciality, (speciality) => speciality.specialityId)
-  @JoinColumn({ name: 'speciality_id' })
-  speciality: Speciality;
-  @OneToMany(() => Availability, (availability) => availability.availabilityId)
-  availabilities: Availability[];
-  @Column({ nullable: true })
-  description: string;
-  @Column({ nullable: true })
-  experience: number;
-  @Column({ nullable: true, default: 'Tunisia' })
-  country: string;
   @Column({ nullable: true })
   profilePicture: string;
-  @Column({ nullable: true })
-  price: number;
-  @Column({ nullable: true })
-  rating: number;
+  @Column({ nullable: false, default: 'Tunisia' })
+  country: string;
 }

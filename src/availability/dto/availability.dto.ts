@@ -1,4 +1,5 @@
 import { Type } from 'class-transformer';
+import { TutorDto } from 'src/tutors/dto/tutor.dto';
 import { UserDto } from 'src/users/dtos/user.dto';
 
 export class AvailabilityDto {
@@ -6,5 +7,7 @@ export class AvailabilityDto {
   startTime: string;
   endTime: string;
   @Type(() => UserDto)
-  user: UserDto;
+  tutor: TutorDto;
+  startDate: Date;
+  endDate: Date;
 }

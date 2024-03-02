@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
+import { TutorsModule } from 'src/tutors/tutors.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthGuard } from './auth.guard';
       signOptions: { expiresIn: '7d' },
     }),
     UsersModule,
+    TutorsModule
   ],
   providers: [
     AuthService,

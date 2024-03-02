@@ -1,13 +1,14 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { AvailabilityService } from './availability.service';
 import { CreateAvailabilityDto } from './dto/create-availability.dto';
+import { AvailabilityDto } from './dto/availability.dto';
 
 @Controller('availability')
 export class AvailabilityController {
   constructor(private readonly availabilityService: AvailabilityService) {}
 
   @Post()
-  create(@Body() createAvailabilityDto: CreateAvailabilityDto) {
+  create(@Body() createAvailabilityDto: AvailabilityDto) {
     return this.availabilityService.create(createAvailabilityDto);
   }
 
