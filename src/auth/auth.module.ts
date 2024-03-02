@@ -16,7 +16,7 @@ import { TutorsModule } from 'src/tutors/tutors.module';
       signOptions: { expiresIn: '7d' },
     }),
     UsersModule,
-    TutorsModule
+    TutorsModule,
   ],
   providers: [
     AuthService,

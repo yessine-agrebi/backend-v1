@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { Role } from 'src/users/roles';
 import { TutorDto } from './dto/tutor.dto';
 import { Tutor } from './entities/tutor.entity';
 import { CreateTutorDto } from './dto/create-tutor.dto';

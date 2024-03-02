@@ -14,16 +14,18 @@ export class AvailabilityService {
     @InjectRepository(Tutor)
     private tutorRepository: Repository<Tutor>,
   ) {}
-  
+
   async create(createAvailabilityDto: AvailabilityDto): Promise<Availability> {
-    const availability = await this.availabilityRepository.create(createAvailabilityDto);
-    console.log(availability)
-    if(availability) {
+    const availability = await this.availabilityRepository.create(
+      createAvailabilityDto,
+    );
+    console.log(availability);
+    if (availability) {
       const tutor = await this.tutorRepository.findOne({
-        where: {userId: availability.tutor.userId},
-        relations: ['availabilities']
-      })
-      if(tutor) {
+        where: { userId: availability.tutor.userId },
+        relations: ['availabilities'],
+      });
+      if (tutor) {
         tutor.availabilities.push(availability);
         await this.tutorRepository.save(tutor);
       }

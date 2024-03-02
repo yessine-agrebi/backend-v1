@@ -19,45 +19,49 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(email: string, pass: string): Promise<{ access_token: string, user: UserDto | TutorDto }> {
+  async signIn(
+    email: string,
+    pass: string,
+  ): Promise<{ access_token: string; user: UserDto | TutorDto }> {
     let userOrTutor: User | Tutor;
 
     const user = await this.usersService.findByEmail(email);
-    if(user) {
+    if (user) {
       userOrTutor = user;
-    }else {
+    } else {
       const tutor = await this.tutorsService.findByEmail(email);
-      if(!tutor) {
+      if (!tutor) {
         throw new NotFoundException('User not found');
       }
       userOrTutor = tutor;
     }
-    
+
     const [salt, storedHash] = userOrTutor.password.split('.');
     const hash = scryptSync(pass, salt, 32) as Buffer;
     if (storedHash !== hash.toString('hex')) {
       throw new Error('Incorrect password');
     }
-    const payload = { 
+    const payload = {
       email: userOrTutor.email,
       firstname: userOrTutor.firstName,
       lastName: userOrTutor.lastName,
       role: userOrTutor.role,
-      sub: userOrTutor.userId };
+      sub: userOrTutor.userId,
+    };
     return {
       access_token: await this.jwtService.signAsync(payload),
       user: userOrTutor,
     };
   }
-  
+
   async register(user: User | Tutor): Promise<User | Tutor> {
     let userOrTutor: User | Tutor;
     const userExists = await this.usersService.findByEmail(user.email);
-    if(userExists) {
+    if (userExists) {
       throw new Error('User already exists');
-    }else{
+    } else {
       const tutorExists = await this.tutorsService.findByEmail(user.email);
-      if(tutorExists) {
+      if (tutorExists) {
         throw new Error('Tutor already exists');
       }
     }
@@ -91,10 +95,4 @@ export class AuthService {
       return this.usersService.createUser(userDto);
     }
   }
-  
-  
-  
-  
-  
-  
 }
