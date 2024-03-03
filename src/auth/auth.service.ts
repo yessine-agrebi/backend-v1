@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { scryptSync } from 'crypto';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CreateTutorDto } from 'src/tutors/dto/create-tutor.dto';
 import { TutorDto } from 'src/tutors/dto/tutor.dto';
 import { Tutor } from 'src/tutors/entities/tutor.entity';
@@ -17,6 +18,7 @@ export class AuthService {
     private usersService: UsersService,
     private tutorsService: TutorsService,
     private jwtService: JwtService,
+    private cloudinaryService: CloudinaryService,
   ) {}
 
   async signIn(
@@ -55,7 +57,10 @@ export class AuthService {
   }
 
   async register(user: User | Tutor, profilePicture: Express.Multer.File): Promise<User | Tutor> {
-    console.log(profilePicture)
+    if (profilePicture) {
+      const result = await this.cloudinaryService.uploadFile(profilePicture);
+      user.profilePicture = result.secure_url;
+    }
     const userExists = await this.usersService.findByEmail(user.email);
     if (userExists) {
       throw new Error('User already exists');
