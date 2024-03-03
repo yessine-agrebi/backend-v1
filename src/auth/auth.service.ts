@@ -54,7 +54,8 @@ export class AuthService {
     };
   }
 
-  async register(user: User | Tutor): Promise<User | Tutor> {
+  async register(user: User | Tutor, profilePicture: Express.Multer.File): Promise<User | Tutor> {
+    console.log(profilePicture)
     const userExists = await this.usersService.findByEmail(user.email);
     if (userExists) {
       throw new Error('User already exists');
