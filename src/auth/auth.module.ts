@@ -7,6 +7,7 @@ import { jwtConstants } from './constants';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth.guard';
 import { TutorsModule } from 'src/tutors/tutors.module';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TutorsModule } from 'src/tutors/tutors.module';
     }),
     UsersModule,
     TutorsModule,
+    CloudinaryModule
   ],
   providers: [
     AuthService,
