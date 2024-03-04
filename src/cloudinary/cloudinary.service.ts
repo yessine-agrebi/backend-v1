@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CloudinaryResponse } from './cloudinary/cloudinary-response';
 import { v2 as cloudinary } from 'cloudinary';
-const streamifier = require('streamifier');
+import streamifier from 'streamifier';
 
 @Injectable()
 export class CloudinaryService {
