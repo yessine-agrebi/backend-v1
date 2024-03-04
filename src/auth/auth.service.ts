@@ -57,10 +57,6 @@ export class AuthService {
   }
 
   async register(user: User | Tutor, profilePicture: Express.Multer.File): Promise<User | Tutor> {
-    if (profilePicture) {
-      const result = await this.cloudinaryService.uploadFile(profilePicture);
-      user.profilePicture = result.secure_url;
-    }
     const userExists = await this.usersService.findByEmail(user.email);
     if (userExists) {
       throw new Error('User already exists');
@@ -70,6 +66,10 @@ export class AuthService {
         throw new Error('Tutor already exists');
       }
     }
+    if (profilePicture) {
+      const result = await this.cloudinaryService.uploadFile(profilePicture);
+      user.profilePicture = result.secure_url;
+    }  
     if ('speciality' in user) {
       // User is a Tutor
       const tutorDto: CreateTutorDto = {
