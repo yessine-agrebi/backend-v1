@@ -31,7 +31,10 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   @UseInterceptors(FileInterceptor('profilePicture'))
-  async register(@Body() user: User | Tutor, @UploadedFile() profilePicture: Express.Multer.File) {
+  async register(
+    @Body() user: User | Tutor,
+    @UploadedFile() profilePicture: Express.Multer.File,
+  ) {
     const response = await this.authService.register(user, profilePicture);
     console.log(response);
     return response;
