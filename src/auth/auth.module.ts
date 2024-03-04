@@ -18,7 +18,7 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
     }),
     UsersModule,
     TutorsModule,
-    CloudinaryModule
+    CloudinaryModule,
   ],
   providers: [
     AuthService,
