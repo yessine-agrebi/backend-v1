@@ -6,7 +6,9 @@ import {
   HttpStatus,
   Post,
   Request,
+  SetMetadata,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -15,6 +17,7 @@ import { SignInDto } from 'src/users/dtos/signIn.dto';
 import { User } from 'src/users/entities/user.entity';
 import { Tutor } from 'src/tutors/entities/tutor.entity';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { RefreshJWTGuard } from './guards/refresh.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +29,6 @@ export class AuthController {
   async signIn(@Body() signInDto: SignInDto) {
     return await this.authService.signIn(signInDto.email, signInDto.password);
   }
-
   @Public()
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
@@ -39,9 +41,11 @@ export class AuthController {
     console.log(response);
     return response;
   }
-
-  @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  @Public()
+  @UseGuards(RefreshJWTGuard)
+  @Post('refresh')
+  async refreshToken(@Request() req) {
+    return await this.authService.refreshToken(req.user);
   }
+
 }

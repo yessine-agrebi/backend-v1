@@ -24,7 +24,10 @@ export class AuthService {
   async signIn(
     email: string,
     pass: string,
-  ): Promise<{ access_token: string; user: UserDto | TutorDto }> {
+  ): Promise<{
+    backendTokens: { accessToken: string; refreshToken: string };
+    user: UserDto | TutorDto;
+  }> {
     let userOrTutor: User | Tutor;
 
     const user = await this.usersService.findByEmail(email);
@@ -51,8 +54,17 @@ export class AuthService {
       sub: userOrTutor.userId,
     };
     return {
-      access_token: await this.jwtService.signAsync(payload),
       user: userOrTutor,
+      backendTokens: {
+        accessToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '1d',
+          secret: process.env.JWT_SECRET,
+        }),
+        refreshToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '7d',
+          secret: process.env.JWT_REFRESH_TOKEN_KEY,
+        }),
+      },
     };
   }
 
@@ -102,5 +114,28 @@ export class AuthService {
       };
       return this.usersService.createUser(userDto);
     }
+  }
+
+  async refreshToken(user: any) {
+    const payload = {
+      email: user.email,
+      firstname: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      sub: user.sub,
+    };
+
+    return {
+      backendTokens: {
+        accessToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '1d',
+          secret: process.env.JWT_SECRET,
+        }),
+        refreshToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '7d',
+          secret: process.env.JWT_REFRESH_TOKEN_KEY,
+        }),
+      },
+    };
   }
 }
