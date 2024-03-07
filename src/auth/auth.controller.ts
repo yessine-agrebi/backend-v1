@@ -1,12 +1,10 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   HttpStatus,
   Post,
   Request,
-  SetMetadata,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -47,5 +45,4 @@ export class AuthController {
   async refreshToken(@Request() req) {
     return await this.authService.refreshToken(req.user);
   }
-
 }

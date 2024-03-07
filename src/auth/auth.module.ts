@@ -16,8 +16,8 @@ import { RefreshJWTGuard } from './guards/refresh.guard';
       global: true,
       secret: jwtConstants.secret,
       signOptions: {
-         expiresIn: process.env.JWT_EXPIRATION, 
-        },
+        expiresIn: process.env.JWT_EXPIRATION,
+      },
     }),
     UsersModule,
     TutorsModule,
@@ -29,7 +29,7 @@ import { RefreshJWTGuard } from './guards/refresh.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    RefreshJWTGuard
+    RefreshJWTGuard,
   ],
   controllers: [AuthController],
   exports: [AuthService],
