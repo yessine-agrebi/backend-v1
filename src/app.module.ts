@@ -9,10 +9,12 @@ import { SkillsModule } from './skills/skills.module';
 import { TutorsModule } from './tutors/tutors.module';
 import { MeetingsModule } from './meetings/meetings.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConfigModule } from '@nestjs/config';
 
 dotenvConfig({ path: '.env' });
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
