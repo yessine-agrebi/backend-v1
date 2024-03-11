@@ -29,7 +29,7 @@ export class AuthController {
   }
   @Public()
   @HttpCode(HttpStatus.CREATED)
-  @Post('register')
+  @Post('signup')
   @UseInterceptors(FileInterceptor('profilePicture'))
   async register(
     @Body() user: User | Tutor,

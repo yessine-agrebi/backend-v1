@@ -86,7 +86,6 @@ export class AuthService {
       user.profilePicture = result.secure_url;
     }
     if ('speciality' in user) {
-      // User is a Tutor
       const tutorDto: CreateTutorDto = {
         firstName: user.firstName,
         lastName: user.lastName,
