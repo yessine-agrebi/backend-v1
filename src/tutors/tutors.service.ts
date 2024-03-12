@@ -43,7 +43,10 @@ export class TutorsService {
   }
 
   findOneTutor(id: number) {
-    return this.tutorsRepository.findOneBy({ userId: id });
+    return this.tutorsRepository.findOne({
+      where: { userId: id },
+      relations: ['speciality', 'availabilities', 'meetings']
+    });
   }
 
   async updateTutor(userId: number, tutor: TutorDto): Promise<User> {
