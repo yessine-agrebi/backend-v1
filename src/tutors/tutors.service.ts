@@ -52,7 +52,10 @@ export class TutorsService {
   async updateTutor(userId: number, tutor: TutorDto): Promise<User> {
     try {
       await this.tutorsRepository.update(userId, tutor);
-      return this.tutorsRepository.findOneBy({ userId });
+      return this.tutorsRepository.findOne({
+        where: { userId },
+        relations: ['speciality'],
+      });
     } catch (error) {
       throw new Error(`Failed to update tutor: ${error.message}`);
     }
