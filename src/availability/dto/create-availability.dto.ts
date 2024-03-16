@@ -3,6 +3,5 @@ export class CreateAvailabilityDto {
   startTime: string;
   endTime: string;
   tutor: number;
-  startDate: string;
-  endDate: string;
+  
 }

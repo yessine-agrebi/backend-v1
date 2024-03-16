@@ -17,10 +17,6 @@ export class Availability {
   startTime: string;
   @Column({ nullable: false, name: 'end_time' })
   endTime: string;
-  @Column({ nullable: false, name: 'start_date' })
-  startDate: Date;
-  @Column({ nullable: false, name: 'end_date' })
-  endDate: Date;
   @ManyToOne(() => Tutor, (tutor) => tutor.availabilities)
   @JoinColumn({ name: 'tutor_id' })
   tutor: Tutor;

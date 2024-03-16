@@ -8,6 +8,4 @@ export class AvailabilityDto {
   endTime: string;
   @Type(() => UserDto)
   tutor: TutorDto;
-  startDate: Date;
-  endDate: Date;
 }
