@@ -1,9 +1,11 @@
+import { Timeslot } from 'src/timeslots/entities/timeslot.entity';
 import { Tutor } from 'src/tutors/entities/tutor.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -20,4 +22,7 @@ export class Availability {
   @ManyToOne(() => Tutor, (tutor) => tutor.availabilities)
   @JoinColumn({ name: 'tutor_id' })
   tutor: Tutor;
+
+  @OneToMany(() => Timeslot, (timeslot) => timeslot.availability)
+  timeslots: Timeslot[];
 }

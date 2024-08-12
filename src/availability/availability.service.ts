@@ -4,6 +4,8 @@ import { Availability } from './entities/availability.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tutor } from 'src/tutors/entities/tutor.entity';
 import { AvailabilityDto } from './dto/availability.dto';
+import { Timeslot } from 'src/timeslots/entities/timeslot.entity';
+import { TimeslotsService } from 'src/timeslots/timeslots.service';
 
 @Injectable()
 export class AvailabilityService {
@@ -12,13 +14,14 @@ export class AvailabilityService {
     private availabilityRepository: Repository<Availability>,
     @InjectRepository(Tutor)
     private tutorRepository: Repository<Tutor>,
+    private timeSlotService: TimeslotsService,
   ) {}
 
   async create(createAvailabilityDto: AvailabilityDto): Promise<Availability> {
     const availability = this.availabilityRepository.create(
       createAvailabilityDto,
     );
-    console.log(availability);
+    
     if (availability) {
       const tutor = await this.tutorRepository.findOne({
         where: { userId: availability.tutor.userId },
@@ -29,7 +32,11 @@ export class AvailabilityService {
         await this.tutorRepository.save(tutor);
       }
     }
-    return await this.availabilityRepository.save(availability);
+    const savedAvailability =  await this.availabilityRepository.save(availability);
+    console.log(savedAvailability);
+    const timeSlots = await this.timeSlotService.createTimeslots(savedAvailability);
+    console.log("ts", timeSlots);
+    return savedAvailability;
   }
 
   findAll(): Promise<Availability[]> {

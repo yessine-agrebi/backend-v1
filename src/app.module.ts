@@ -10,6 +10,7 @@ import { TutorsModule } from './tutors/tutors.module';
 import { MeetingsModule } from './meetings/meetings.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule } from '@nestjs/config';
+import { TimeslotsModule } from './timeslots/timeslots.module';
 
 dotenvConfig({ path: '.env' });
 @Module({
@@ -35,6 +36,7 @@ dotenvConfig({ path: '.env' });
     TutorsModule,
     MeetingsModule,
     CloudinaryModule,
+    TimeslotsModule,
   ],
   controllers: [],
   providers: [],
